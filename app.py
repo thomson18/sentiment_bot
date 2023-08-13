@@ -12,11 +12,11 @@ def predict_sentiment(user_input, model, tfidf):
     sentiment = 'Positive' if prediction > 0.5 else 'Negative'
     return sentiment
 
-@app.route('/')
-def hello_world():
-    return jsonify(message='Hello, World!')
+# @app.route('/')
+# def hello_world():
+#     return jsonify(message='Hello, World!')
 
-@app.route('/predict')
+@app.route('/')
 def index():
     return render_template('index.html')
 
