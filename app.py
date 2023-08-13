@@ -49,4 +49,4 @@ def predict_sentiment_api():
         return jsonify(error_msg), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
