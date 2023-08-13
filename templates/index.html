@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analysis Bot</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-box {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+
+        .bot-message {
+            background-color: #8dd2d9;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis Bot</h1>
+        <div class="chat-box" id="chatBox">
+            <div class="bot-message">How are you doing today?</div>
+        </div>
+        <input type="text" id="userInput" placeholder="Enter your message...">
+        <button id="sendButton">Send</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const chatBox = document.getElementById('chatBox');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+
+            sendButton.addEventListener('click', function() {
+                const userMessage = userInput.value.trim();
+
+                if (userMessage !== '') {
+                    // Display chatbot and user message in the chat box
+                    chatBox.innerHTML += `<div class="user-message">${userMessage}</div>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+
+                    // Clear the input
+                    userInput.value = '';
+
+                    // Send user message to the server
+                    sendUserMessage(userMessage);
+                }
+            });
+
+            function sendUserMessage(message) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/predict_sentiment',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'user_input': message }),
+                    success: function(data) {
+                        // Display bot response in the chat box
+                        const botMessage = `${data.chatbot_response}`;
+                        chatBox.innerHTML += `<div class="bot-message">${botMessage}</div>`;
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
