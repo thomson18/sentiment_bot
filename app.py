@@ -20,7 +20,7 @@ def predict_sentiment(user_input, model, tfidf):
 def index():
     return render_template('index.html')
 
-@app.route('/predict_sentiment', methods=['POST'])
+@app.route('/predict_sentiment', methods=['POST', 'GET'])
 def predict_sentiment_api():
     try:
         data = request.get_json()
